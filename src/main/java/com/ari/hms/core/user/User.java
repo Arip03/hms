@@ -1,5 +1,6 @@
 package com.ari.hms.core.user;
 
+import com.ari.hms.core.image.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Image profilePhoto;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
     private Timestamp createdAt;
@@ -50,5 +54,4 @@ public class User {
 
     @Column(name = "deleted_at")
     private Timestamp deletedAt;
-
 }

@@ -1,5 +1,6 @@
 package com.ari.hms.core.user;
 
+import com.ari.hms.core.user.dto.response.ProfileUserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE u.role = :role")
     List<User> findByRole(@Param("role") Role role);
+
+    @Query("Select New com.ari.hms.core.user.dto.response.ProfileUserDto"
+            + "(CONCAT(u.firstname, ' ',u.lastname), u.username, u.role) "
+            + "From User u Where u.id = :userId")
+    Optional<ProfileUserDto> getProfileUserById(@Param("userId") Long userId);
 }

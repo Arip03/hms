@@ -5,6 +5,7 @@ import com.ari.hms.config.security.services.jwt.JwtService;
 import com.ari.hms.core.commons.exception.BadRequestException;
 import com.ari.hms.core.user.commons.UserMapper;
 import com.ari.hms.core.user.dto.request.UserDataDto;
+import com.ari.hms.core.user.dto.response.ProfileUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,5 +46,11 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new BadCredentialsException("User is not Valid");
         }
+    }
+
+    public ProfileUserDto getProfileUserById(Long id){
+        return userRepository.getProfileUserById(id).orElseThrow(
+                () -> new BadRequestException("This user dosen't exist")
+        );
     }
 }

@@ -1,8 +1,7 @@
 package com.ari.hms.core.user;
 
-import com.ari.hms.config.security.services.jwt.JwtService;
 import com.ari.hms.core.user.dto.request.TokenDto;
-import org.apache.coyote.BadRequestException;
+import com.ari.hms.core.user.dto.response.ProfileUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,5 +25,10 @@ public class UserController {
         } catch (BadCredentialsException c){
             return ResponseEntity.status(401).body("Invalid token");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProfileUserDto> getUserProfileById(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(userService.getProfileUserById(id));
     }
 }
