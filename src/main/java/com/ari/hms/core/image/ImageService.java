@@ -7,5 +7,5 @@ public interface ImageService {
 
     Image createImage(CreateImageDto createImageDto);
 
-    ImageResponse getImageAsBase64(Long userId);
+    ImageResponse getImageAsBase64(String username);
 }

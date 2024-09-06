@@ -16,7 +16,7 @@ import java.util.Base64;
 @Service
 public class ImageServiceImpl implements ImageService{
 
-    private final Path fileStorageLocation = Paths.get("uploaded-images");
+    private final Path fileStorageLocation = Paths.get("../resources/uploaded-images");
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
 
@@ -54,9 +54,9 @@ public class ImageServiceImpl implements ImageService{
         }
     }
 
-    public ImageResponse getImageAsBase64(Long userId) {
-        Image image = imageRepository.findUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Image not found for user " + userId));
+    public ImageResponse getImageAsBase64(String username) {
+        Image image = imageRepository.findUserByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Image not found for user " + username));
 
         try {
             Path imagePath = Paths.get(image.getFileUrl());

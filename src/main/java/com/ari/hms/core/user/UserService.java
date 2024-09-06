@@ -7,6 +7,6 @@ public interface UserService {
 
     UserDataDto verifyUser(String token);
 
-    ProfileUserDto getProfileUserById(Long id);
+    ProfileUserDto getProfileUserById(String token);
 
 }

@@ -48,8 +48,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public ProfileUserDto getProfileUserById(Long id){
-        return userRepository.getProfileUserById(id).orElseThrow(
+    public ProfileUserDto getProfileUserById(String token){
+
+        return userRepository.getProfileUserById(jwtService.extractUsername(token)).orElseThrow(
                 () -> new BadRequestException("This user dosen't exist")
         );
     }

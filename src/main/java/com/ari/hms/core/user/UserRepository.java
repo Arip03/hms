@@ -26,6 +26,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("Select New com.ari.hms.core.user.dto.response.ProfileUserDto"
             + "(CONCAT(u.firstname, ' ',u.lastname), u.username, u.role) "
-            + "From User u Where u.id = :userId")
-    Optional<ProfileUserDto> getProfileUserById(@Param("userId") Long userId);
+            + "From User u Where u.username = :username")
+    Optional<ProfileUserDto> getProfileUserById(@Param("username") String username);
 }

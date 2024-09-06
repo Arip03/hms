@@ -1,5 +1,6 @@
 package com.ari.hms.core.image;
 
+import com.ari.hms.config.security.services.jwt.JwtService;
 import com.ari.hms.core.image.request.CreateImageDto;
 import com.ari.hms.core.image.request.ImageResponse;
 import org.springframework.http.HttpStatus;
@@ -13,8 +14,11 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    public ImageController(ImageService imageService) {
+    private final JwtService jwtService;
+
+    public ImageController(ImageService imageService, JwtService jwtService) {
         this.imageService = imageService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/upload")
@@ -30,9 +34,10 @@ public class ImageController {
         return new ResponseEntity<>(createdImage, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ImageResponse> getUserImageAsBase64(@PathVariable Long userId) {
-        ImageResponse base64Image = imageService.getImageAsBase64(userId);
+    @GetMapping
+    public ResponseEntity<ImageResponse> getUserImageAsBase64(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        ImageResponse base64Image = imageService.getImageAsBase64(jwtService.extractUsername(token));
         return ResponseEntity.ok(base64Image);
     }
 }

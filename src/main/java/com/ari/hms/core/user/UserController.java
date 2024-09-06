@@ -27,8 +27,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfileUserDto> getUserProfileById(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(userService.getProfileUserById(id));
+    @GetMapping
+    public ResponseEntity<ProfileUserDto> getUserProfileById(@RequestHeader("Authorization") String authorizationHeader) {
+        String token = authorizationHeader.replace("Bearer ", "");
+        return ResponseEntity.ok(userService.getProfileUserById(token));
     }
 }
