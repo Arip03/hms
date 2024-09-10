@@ -24,4 +24,10 @@ public class PatientServiceImpl implements PatientService{
             throw new BadRequestException("Patient with this personal number already exist");
         }
     }
+
+
+    public Patient getPatientByPersonalNumber(String personalNumber) {
+        return patientRepository.findPatientByPersonalNumber(personalNumber)
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+    }
 }

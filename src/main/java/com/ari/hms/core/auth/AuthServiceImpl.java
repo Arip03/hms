@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = new SecurityUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
 
-        return AuthenticationResponse.builder().token(jwtToken).role(user.getRole()).build();
+        return AuthenticationResponse.builder().token(jwtToken).role(user.getRole().toString().toLowerCase()).build();
     }
 
     @Override
@@ -68,6 +68,6 @@ public class AuthServiceImpl implements AuthService {
         UserDetails userDetails = new SecurityUser(user);
         String jwtToken = jwtService.generateToken(userDetails);
 
-        return new AuthenticationResponse(jwtToken, user.getRole());
+        return new AuthenticationResponse(jwtToken, user.getRole().toString().toLowerCase());
     }
 }
