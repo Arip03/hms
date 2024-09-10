@@ -1,6 +1,7 @@
 package com.ari.hms.core.patient;
 
 import com.ari.hms.core.patient.dto.request.CreatePatientDto;
+import com.ari.hms.core.patient.dto.response.CreatePatientResponse;
 import com.ari.hms.core.user.User;
 import com.ari.hms.core.user.UserRepository;
 import com.ari.hms.core.user.UserService;
@@ -9,6 +10,8 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/patients")
@@ -28,15 +31,18 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPatient(@RequestHeader("Authorization") String authorizationHeader,
-                                           @RequestBody @Valid CreatePatientDto createPatientDto) throws BadRequestException {
+    public ResponseEntity<CreatePatientResponse> createPatient(@RequestBody @Valid CreatePatientDto createPatientDto) {
         Patient patient = patientMapper.createDtoToPatient(createPatientDto);
-        try {
-            patientService.createPatient(patient, null);
-            return ResponseEntity.ok("Patient added successfully");
-        } catch (Exception e) {
-            throw new BadRequestException("Something went wrong: " + e.getMessage());
-        }
-    }
 
+        Patient createdPatient = patientService.createPatient(patient);
+
+        CreatePatientResponse response = new CreatePatientResponse(
+                createdPatient.getId(),
+                "Patient added successfully"
+        );
+
+        URI location = URI.create("/patients/" + createdPatient.getId());
+
+        return ResponseEntity.created(location).body(response);
+    }
 }
