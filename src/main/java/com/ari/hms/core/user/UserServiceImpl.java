@@ -6,12 +6,15 @@ import com.ari.hms.core.commons.exception.BadRequestException;
 import com.ari.hms.core.user.commons.UserMapper;
 import com.ari.hms.core.user.dto.request.UserDataDto;
 import com.ari.hms.core.user.dto.response.ProfileUserDto;
+import com.ari.hms.core.user.dto.response.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -52,5 +55,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.getProfileUserById(jwtService.extractUsername(token)).orElseThrow(
                 () -> new BadRequestException("This user dosen't exist")
         );
+    }
+
+    public List<UserDto> getAllDoctors(){
+        return userRepository.findUsersByRole(Role.DOCTOR);
     }
 }
